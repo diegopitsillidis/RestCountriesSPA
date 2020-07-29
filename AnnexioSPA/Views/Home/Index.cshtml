@@ -1,0 +1,157 @@
+﻿@model AnnexioSPA.Models.Countries
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Countries</h1>
+    <button class="btn btn-dark" id="darkmodeBtn" onclick="darkmode()">Switch to Dark Mode</button>
+    <div class="row">
+    @*Loop through all countries*@
+   @foreach (var country in Model.countries)
+    {
+        <div class="col-md-4">
+            @*Image*@
+            <div class="container">
+                @*image with onclick function that passes the country name as a parameter to the openModal() function*@
+                <img src="@country.flag" alt="Flag of @country.name" class="img-fluid rounded" id="@country.name Img" onclick="openModal('@country.name')">
+            </div>
+
+            @*Modal*@
+            <div id="@country.name" class="modal">
+                <div class="modal-content">
+                    <p>Name: @country.name</p>
+                    <p>Capital: @country.capital</p>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr><th> Official Currencies: </th></tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var currency in country.Currencies)
+                            {
+                                <tr><td>@currency.name</td></tr>
+                            }
+                        </tbody>
+                    </table>
+                    <p>Population: @country.population</p>
+                    <p>ISO code: @country.alpha3Code</p>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr><th> Official Languages: </th></tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var language in country.Languages)
+                            {
+                                <tr><td>@language.name</td></tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+    </div>
+</div>
+
+<style>
+    .container {
+        padding: 2px;
+    }
+
+    .img-fluid {
+        cursor: pointer;
+    }
+
+    .img-fluid:hover {
+        opacity: 0.7;
+    }
+    /* The Modal (background) */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      padding-top: 100px; /* Location of the box */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modal-content {
+      background-color: #fefefe;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 500px;
+    }
+
+    /*dark mode*/
+    .dark-mode {
+        background-color: #1e1e1e;
+        color: white;
+    }
+
+    .table {
+        color:inherit;
+    }
+</style>
+
+<script>
+    //gets element of specific img
+    function openModal(element) {
+        var x = document.getElementById("darkmodeBtn")
+        if (x.className === "btn btn-dark") {
+            var modal = document.getElementById(element);
+            modal.style.display = "block";
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
+        else
+        {
+            var modal = document.getElementById(element);
+            modal.style.display = "block";
+            
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+
+            var modalContent = modal.childNodes;
+            modalContent[1].style.backgroundColor = "#1e1e1e";
+            var modalTable = modalContent.childNodes;
+            modalTable[3].style.backgroundColor = "#FF0000";
+            //modalContent.getElementsByTagName('table').style.backgroundColor="#FF0000"
+
+            //var modalContent = document.getElementsByClassName("modal-content");
+            //alert(modalContent);
+            //modalContent.style.backgroundColor = "#1e1e1e";
+        }
+    }
+
+    function darkmode() {
+        var element = document.body;
+        element.classList.toggle("dark-mode");
+
+        var x = document.getElementById("darkmodeBtn");
+        if (x.className === "btn btn-dark") {
+            x.className = "btn btn-light";
+            x.textContent = "Switch to Light Mode";
+        } else {
+            x.className = "btn btn-dark";
+            x.textContent = "Switch to Dark Mode";
+        }
+    }
+
+</script>
